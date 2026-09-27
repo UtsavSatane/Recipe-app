@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('./db');
 const userRoutes = require('./routes/userRoutes');
 const pantryRoutes = require('./routes/pantryRoutes');
+const ingredientRoutes = require('./routes/ingredientRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.get('/api/health', async (req, res) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/pantry', pantryRoutes);
+app.use('/api/ingredients', ingredientRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
