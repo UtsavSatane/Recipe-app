@@ -35,6 +35,7 @@ export default function MacroGoals() {
   return (
     <div className="macro-goals-page">
       <h1>Macro Goals</h1>
+      <p className="subtitle">Set your daily nutrition targets</p>
       <form onSubmit={handleSubmit} className="goals-form">
         <ErrorMessage message={error} />
         {success && <div className="success-message">{success}</div>}

@@ -7,7 +7,7 @@ export default function AvailabilityBadge({ group }) {
 
   return (
     <span className={`availability-badge ${isAvailable ? 'available' : 'partial'}`}>
-      {isAvailable ? '✓ Fully Available' : '◐ Partially Available'}
+      {isAvailable ? 'Ready to Cook' : 'Almost Ready'}
     </span>
   );
 }

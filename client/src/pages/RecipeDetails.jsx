@@ -40,9 +40,13 @@ export default function RecipeDetails() {
         <AvailabilityBadge group={recipe.availability?.group} />
       </div>
 
-      <div className="recipe-info">
-        <p><strong>Servings:</strong> {recipe.recipe.servings}</p>
-        <p><strong>Instructions:</strong> {recipe.recipe.instructions}</p>
+      <div className="recipe-meta">
+        <span>Servings: {recipe.recipe.servings}</span>
+      </div>
+
+      <div className="recipe-section">
+        <h2>Instructions</h2>
+        <p className="recipe-instructions">{recipe.recipe.instructions}</p>
       </div>
 
       <div className="recipe-section">
@@ -57,16 +61,21 @@ export default function RecipeDetails() {
       <div className="recipe-section">
         <h2>Nutrition</h2>
         <div className="nutrition-section">
-          <h3>Total</h3>
-          <NutritionCard nutrition={recipe.nutrition?.total} />
-          <h3>Per Serving</h3>
-          <NutritionCard nutrition={recipe.nutrition?.per_serving} />
+          <div>
+            <h3>Total</h3>
+            <NutritionCard nutrition={recipe.nutrition?.total} />
+          </div>
+          <div>
+            <h3>Per Serving</h3>
+            <NutritionCard nutrition={recipe.nutrition?.per_serving} />
+          </div>
         </div>
       </div>
 
       <div className="recipe-section">
         <h2>Macro Fit Score</h2>
-        <p className="macro-fit-score">{recipe.macro_fit_score}/100</p>
+        <p className="macro-fit-score">{recipe.macro_fit_score}</p>
+        <p className="macro-fit-label">out of 100</p>
       </div>
 
       {recipe.shopping_suggestions?.length > 0 && (
@@ -76,7 +85,7 @@ export default function RecipeDetails() {
             {recipe.shopping_suggestions.map((item) => (
               <div key={item.ingredient_id} className="suggestion-item">
                 <span className="suggestion-text">
-                  Buy {item.suggested_purchase_grams}g {item.ingredient}
+                  Add {item.suggested_purchase_grams}g {item.ingredient} to your next grocery trip
                 </span>
                 <span className={`priority-badge priority-${item.priority.toLowerCase()}`}>
                   {item.priority}

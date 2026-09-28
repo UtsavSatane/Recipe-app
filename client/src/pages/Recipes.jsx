@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../api/api';
 import LoadingState from '../components/LoadingState';
 import ErrorMessage from '../components/ErrorMessage';
@@ -31,6 +32,7 @@ export default function Recipes() {
   return (
     <div className="recipes-page">
       <h1>All Recipes</h1>
+      <p className="subtitle">Browse our collection of recipes</p>
       <div className="recipe-grid">
         {recipes.map((recipe) => (
           <div key={recipe.recipe_id} className="recipe-card">
@@ -42,9 +44,9 @@ export default function Recipes() {
               <NutritionCard nutrition={recipe.nutrition} />
             </div>
             <div className="recipe-card-footer">
-              <a href={`/recipes/${recipe.recipe_id}`} className="btn btn-primary">
+              <Link to={`/recipes/${recipe.recipe_id}`} className="btn btn-primary" style={{ width: '100%' }}>
                 View Details
-              </a>
+              </Link>
             </div>
           </div>
         ))}
