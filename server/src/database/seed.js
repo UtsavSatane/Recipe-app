@@ -41,10 +41,10 @@ const recipes = [
     instructions: '1. Cook white rice according to package instructions.\n2. Season chicken breast with salt and pepper.\n3. Heat olive oil in a pan over medium-high heat.\n4. Cook chicken for 6-7 minutes per side until fully cooked.\n5. Steam broccoli for 4-5 minutes.\n6. Slice chicken and serve over rice with broccoli on the side.',
     servings: 2,
     ingredients: [
-      { name: 'Chicken Breast', quantity_grams: 200 },
-      { name: 'White Rice',     quantity_grams: 150 },
-      { name: 'Broccoli',       quantity_grams: 100 },
-      { name: 'Olive Oil',      quantity_grams: 10  },
+      { name: 'Chicken Breast', quantity_grams: 200, priority: 'CORE' },
+      { name: 'White Rice',     quantity_grams: 150, priority: 'CORE' },
+      { name: 'Broccoli',       quantity_grams: 100, priority: 'SUPPORTING' },
+      { name: 'Olive Oil',      quantity_grams: 10,  priority: 'OPTIONAL' },
     ],
   },
   {
@@ -53,10 +53,10 @@ const recipes = [
     instructions: '1. Combine oats and milk in a saucepan.\n2. Cook over medium heat for 5 minutes, stirring occasionally.\n3. Remove from heat and stir in whey protein.\n4. Top with sliced banana and serve.',
     servings: 1,
     ingredients: [
-      { name: 'Oats',         quantity_grams: 80  },
-      { name: 'Whey Protein', quantity_grams: 30  },
-      { name: 'Milk',         quantity_grams: 200 },
-      { name: 'Banana',       quantity_grams: 100 },
+      { name: 'Oats',         quantity_grams: 80,  priority: 'CORE' },
+      { name: 'Whey Protein', quantity_grams: 30,  priority: 'CORE' },
+      { name: 'Milk',         quantity_grams: 200, priority: 'CORE' },
+      { name: 'Banana',       quantity_grams: 100, priority: 'SUPPORTING' },
     ],
   },
   {
@@ -65,10 +65,10 @@ const recipes = [
     instructions: '1. Cut chicken breast into bite-sized pieces.\n2. Heat olive oil in a skillet over medium heat.\n3. Add onion and cook until translucent.\n4. Add chicken and cook until no longer pink.\n5. Add broccoli and cook for 5 more minutes.\n6. Season with salt, pepper, and garlic powder.',
     servings: 2,
     ingredients: [
-      { name: 'Chicken Breast', quantity_grams: 200 },
-      { name: 'Broccoli',       quantity_grams: 150 },
-      { name: 'Olive Oil',      quantity_grams: 10  },
-      { name: 'Onion',          quantity_grams: 50  },
+      { name: 'Chicken Breast', quantity_grams: 200, priority: 'CORE' },
+      { name: 'Broccoli',       quantity_grams: 150, priority: 'CORE' },
+      { name: 'Olive Oil',      quantity_grams: 10,  priority: 'OPTIONAL' },
+      { name: 'Onion',          quantity_grams: 50,  priority: 'SUPPORTING' },
     ],
   },
   {
@@ -77,11 +77,11 @@ const recipes = [
     instructions: '1. Blend oats into a fine flour.\n2. In a bowl, whisk eggs and egg whites.\n3. Add oat flour, whey protein, and mashed banana. Mix until smooth.\n4. Heat a non-stick pan over medium heat.\n5. Pour batter to form pancakes.\n6. Cook 2-3 minutes per side until golden brown.',
     servings: 2,
     ingredients: [
-      { name: 'Oats',         quantity_grams: 60  },
-      { name: 'Eggs',         quantity_grams: 100 },
-      { name: 'Egg Whites',   quantity_grams: 100 },
-      { name: 'Whey Protein', quantity_grams: 30  },
-      { name: 'Banana',       quantity_grams: 80  },
+      { name: 'Oats',         quantity_grams: 60,  priority: 'CORE' },
+      { name: 'Eggs',         quantity_grams: 100, priority: 'CORE' },
+      { name: 'Egg Whites',   quantity_grams: 100, priority: 'CORE' },
+      { name: 'Whey Protein', quantity_grams: 30,  priority: 'CORE' },
+      { name: 'Banana',       quantity_grams: 80,  priority: 'SUPPORTING' },
     ],
   },
   {
@@ -90,11 +90,11 @@ const recipes = [
     instructions: '1. Cook brown rice according to package instructions.\n2. Cut paneer into cubes.\n3. Heat olive oil in a pan over medium heat.\n4. Add onion and bell pepper, cook for 3 minutes.\n5. Add paneer cubes and cook until golden on all sides.\n6. Serve paneer and vegetables over brown rice.',
     servings: 2,
     ingredients: [
-      { name: 'Paneer',        quantity_grams: 150 },
-      { name: 'Brown Rice',    quantity_grams: 150 },
-      { name: 'Bell Pepper',   quantity_grams: 80  },
-      { name: 'Onion',         quantity_grams: 50  },
-      { name: 'Olive Oil',     quantity_grams: 10  },
+      { name: 'Paneer',        quantity_grams: 150, priority: 'CORE' },
+      { name: 'Brown Rice',    quantity_grams: 150, priority: 'CORE' },
+      { name: 'Bell Pepper',   quantity_grams: 80,  priority: 'SUPPORTING' },
+      { name: 'Onion',         quantity_grams: 50,  priority: 'SUPPORTING' },
+      { name: 'Olive Oil',     quantity_grams: 10,  priority: 'OPTIONAL' },
     ],
   },
   {
@@ -103,10 +103,10 @@ const recipes = [
     instructions: '1. Drain tuna and place in a bowl.\n2. Add Greek yogurt and mix well.\n3. Finely chop tomato and onion.\n4. Add tomato and onion to the tuna mixture.\n5. Season with salt and pepper.\n6. Serve on whole grain bread or as a salad.',
     servings: 1,
     ingredients: [
-      { name: 'Tuna',         quantity_grams: 120 },
-      { name: 'Greek Yogurt', quantity_grams: 50  },
-      { name: 'Tomato',       quantity_grams: 50  },
-      { name: 'Onion',        quantity_grams: 30  },
+      { name: 'Tuna',         quantity_grams: 120, priority: 'CORE' },
+      { name: 'Greek Yogurt', quantity_grams: 50,  priority: 'SUPPORTING' },
+      { name: 'Tomato',       quantity_grams: 50,  priority: 'SUPPORTING' },
+      { name: 'Onion',        quantity_grams: 30,  priority: 'SUPPORTING' },
     ],
   },
   {
@@ -115,10 +115,10 @@ const recipes = [
     instructions: '1. Add Greek yogurt to a bowl.\n2. Top with whey protein and mix gently.\n3. Slice apple and arrange on top.\n4. Sprinkle almonds over the bowl.\n5. Serve immediately.',
     servings: 1,
     ingredients: [
-      { name: 'Greek Yogurt', quantity_grams: 200 },
-      { name: 'Whey Protein', quantity_grams: 25  },
-      { name: 'Almonds',      quantity_grams: 20  },
-      { name: 'Apple',        quantity_grams: 100 },
+      { name: 'Greek Yogurt', quantity_grams: 200, priority: 'CORE' },
+      { name: 'Whey Protein', quantity_grams: 25,  priority: 'CORE' },
+      { name: 'Almonds',      quantity_grams: 20,  priority: 'SUPPORTING' },
+      { name: 'Apple',        quantity_grams: 100, priority: 'SUPPORTING' },
     ],
   },
   {
@@ -127,10 +127,10 @@ const recipes = [
     instructions: '1. Preheat oven to 200C (400F).\n2. Cut sweet potato into wedges, toss with olive oil.\n3. Roast sweet potato for 25 minutes.\n4. Season salmon with salt, pepper, and lemon juice.\n5. Pan-sear salmon for 4 minutes per side.\n6. Serve salmon over spinach with sweet potato wedges.',
     servings: 2,
     ingredients: [
-      { name: 'Salmon',       quantity_grams: 180 },
-      { name: 'Sweet Potato', quantity_grams: 200 },
-      { name: 'Spinach',      quantity_grams: 50  },
-      { name: 'Olive Oil',    quantity_grams: 10  },
+      { name: 'Salmon',       quantity_grams: 180, priority: 'CORE' },
+      { name: 'Sweet Potato', quantity_grams: 200, priority: 'CORE' },
+      { name: 'Spinach',      quantity_grams: 50,  priority: 'SUPPORTING' },
+      { name: 'Olive Oil',    quantity_grams: 10,  priority: 'OPTIONAL' },
     ],
   },
 ];
@@ -190,11 +190,12 @@ async function seed() {
       for (const ing of recipe.ingredients) {
         const ingredientId = ingredientIds[ing.name];
         await client.query(
-          `INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity_grams)
-           VALUES ($1, $2, $3)
+          `INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity_grams, priority)
+           VALUES ($1, $2, $3, $4::ingredient_priority)
            ON CONFLICT (recipe_id, ingredient_id) DO UPDATE SET
-             quantity_grams = EXCLUDED.quantity_grams`,
-          [recipeId, ingredientId, ing.quantity_grams]
+             quantity_grams = EXCLUDED.quantity_grams,
+             priority = EXCLUDED.priority`,
+          [recipeId, ingredientId, ing.quantity_grams, ing.priority]
         );
       }
     }

@@ -45,6 +45,17 @@ CREATE TABLE IF NOT EXISTS recipes (
 );
 
 -- -------------------------------------------------------------
+-- ENUM: ingredient_priority
+-- -------------------------------------------------------------
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ingredient_priority') THEN
+        CREATE TYPE ingredient_priority AS ENUM ('CORE', 'SUPPORTING', 'OPTIONAL');
+    END IF;
+END
+$$;
+
+-- -------------------------------------------------------------
 -- TABLE: recipe_ingredients
 -- -------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS recipe_ingredients (
@@ -52,6 +63,7 @@ CREATE TABLE IF NOT EXISTS recipe_ingredients (
     recipe_id       INTEGER      NOT NULL,
     ingredient_id   INTEGER      NOT NULL,
     quantity_grams  NUMERIC(10,2) NOT NULL CHECK (quantity_grams > 0),
+    priority        ingredient_priority NOT NULL,
 
     CONSTRAINT fk_recipe_ingredients_recipe
         FOREIGN KEY (recipe_id) REFERENCES recipes (id)
