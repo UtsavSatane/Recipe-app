@@ -17,11 +17,20 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [pantry, setPantry] = useState([]);
   const [recipes, setRecipes] = useState([]);
+  const [macroGoals, setMacroGoals] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     loadInitialData();
+  }, []);
+
+  useEffect(() => {
+    // Load macro goals from localStorage
+    const savedGoals = localStorage.getItem('macroGoals');
+    if (savedGoals) {
+      setMacroGoals(JSON.parse(savedGoals));
+    }
   }, []);
 
   useEffect(() => {
@@ -183,6 +192,41 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Macro Targets */}
+      <div className="dashboard-section">
+        <div className="section-header">
+          <h2>Your Daily Targets</h2>
+          {macroGoals && (
+            <Link to="/goals" className="btn btn-outline btn-sm">Edit Goals</Link>
+          )}
+        </div>
+        {macroGoals ? (
+          <div className="macro-targets">
+            <div className="macro-target">
+              <span className="macro-label">Calories</span>
+              <span className="macro-value">{macroGoals.target_calories} kcal</span>
+            </div>
+            <div className="macro-target">
+              <span className="macro-label">Protein</span>
+              <span className="macro-value">{macroGoals.target_protein}g</span>
+            </div>
+            <div className="macro-target">
+              <span className="macro-label">Carbohydrates</span>
+              <span className="macro-value">{macroGoals.target_carbs}g</span>
+            </div>
+            <div className="macro-target">
+              <span className="macro-label">Fat</span>
+              <span className="macro-value">{macroGoals.target_fat}g</span>
+            </div>
+          </div>
+        ) : (
+          <div className="empty-state">
+            <p>Set your daily macro goals to get more personalized recipe recommendations.</p>
+            <Link to="/goals" className="btn btn-primary">Set Macro Goals</Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

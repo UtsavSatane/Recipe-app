@@ -449,6 +449,14 @@ body {
   gap: 16px;
 }
 
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
 .macro-target {
   text-align: center;
   padding: 16px;
@@ -624,7 +632,7 @@ body {
 
 .ingredient-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
@@ -698,13 +706,13 @@ body {
 /* Responsive Ingredient Grid */
 @media (max-width: 1024px) {
   .ingredient-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 640px) {
   .ingredient-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
