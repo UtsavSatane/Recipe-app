@@ -79,6 +79,7 @@ export const api = {
   }),
 
   // Ingredients
+  getAllIngredients: () => request('/ingredients/all-ingredients'),
   searchIngredients: (query) => request(`/ingredients/search?q=${encodeURIComponent(query)}`),
 
   // Recipes

@@ -581,6 +581,133 @@ body {
   flex-shrink: 0;
 }
 
+/* Ingredient Images */
+.ingredient-image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+
+.ingredient-image-fallback {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Ingredient Grid */
+.ingredient-search-box {
+  margin-bottom: 20px;
+}
+
+.ingredient-search-box input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ingredient-search-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.ingredient-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.ingredient-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.ingredient-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.ingredient-card.in-pantry {
+  border-color: var(--success);
+  background: var(--success-light);
+}
+
+.ingredient-card-image {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredient-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ingredient-card-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.ingredient-card-calories {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin-bottom: 12px;
+}
+
+.in-pantry-label {
+  font-size: 0.75rem;
+  color: var(--success);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.add-ingredient-btn {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Responsive Ingredient Grid */
+@media (max-width: 1024px) {
+  .ingredient-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .ingredient-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .autocomplete-empty {
   padding: 20px 16px;
   text-align: center;

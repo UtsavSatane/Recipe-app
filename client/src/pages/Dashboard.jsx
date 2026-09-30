@@ -6,7 +6,7 @@ import RecipeCard from '../components/RecipeCard';
 import LoadingState from '../components/LoadingState';
 import ErrorMessage from '../components/ErrorMessage';
 
-const DEFAULT_QUANTITY = 200;
+const DEFAULT_QUANTITY = 100;
 const QUANTITY_STEP = 50;
 const MIN_QUANTITY = 1;
 
@@ -31,22 +31,17 @@ function getGreeting() {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [allIngredients, setAllIngredients] = useState([]);
   const [pantry, setPantry] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const [macroTargets, setMacroTargets] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [searching, setSearching] = useState(false);
   const [addingId, setAddingId] = useState(null);
-  const [success, setSuccess] = useState('');
   const [updatingId, setUpdatingId] = useState(null);
   const [editValues, setEditValues] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
-  const debounceRef = useRef(null);
-  const dropdownRef = useRef(null);
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     loadInitialData();
@@ -60,42 +55,15 @@ export default function Dashboard() {
     }
   }, [pantry.length]);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const [pantryData, macroData] = await Promise.all([
+      const [ingredientsData, pantryData] = await Promise.all([
+        api.getAllIngredients(),
         api.getPantry(),
-        api.getRecipe('1').catch(() => null),
       ]);
+      setAllIngredients(ingredientsData.ingredients || []);
       setPantry(pantryData.pantry || []);
-
-      // Fetch macro targets from users endpoint
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/users/me/goals', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          target_calories: 0,
-          target_protein: 0,
-          target_carbs: 0,
-          target_fat: 0,
-        }),
-      });
-      // This is a workaround - we need to get the current goals
-      // Let's use a different approach - fetch from the match endpoint which includes targets
     } catch (err) {
       setError(err.message || 'Failed to load dashboard');
     } finally {
@@ -124,54 +92,14 @@ export default function Dashboard() {
     }
   };
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    setSuccess('');
-
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    if (!value.trim()) {
-      setSuggestions([]);
-      setShowDropdown(false);
-      return;
-    }
-
-    setSearching(true);
-    setShowDropdown(true);
-
-    debounceRef.current = setTimeout(async () => {
-      try {
-        const data = await api.searchIngredients(value);
-        setSuggestions(data.ingredients || []);
-      } catch (err) {
-        setSuggestions([]);
-      } finally {
-        setSearching(false);
-      }
-    }, 300);
-  };
-
-  const handleQuickAdd = async (ing) => {
+  const handleAddIngredient = async (ing) => {
     try {
       setAddingId(ing.id);
-      const existing = pantry.find((p) => p.ingredient_id === ing.id);
-
-      if (existing) {
-        const currentQty = parseFloat(existing.quantity_grams);
-        await api.updatePantryItem(ing.id, currentQty + DEFAULT_QUANTITY);
-        setSuccess(`${ing.name} quantity increased by ${DEFAULT_QUANTITY}g`);
-      } else {
-        await api.addPantryItem({
-          ingredient_id: ing.id,
-          quantity_grams: DEFAULT_QUANTITY,
-        });
-        setSuccess(`${ing.name} added to pantry`);
-      }
-
-      setSearchQuery('');
-      setSuggestions([]);
-      setShowDropdown(false);
+      await api.addPantryItem({
+        ingredient_id: ing.id,
+        quantity_grams: DEFAULT_QUANTITY,
+      });
+      setSuccess(`${ing.name} added to pantry`);
       await loadPantry();
     } catch (err) {
       setError(err.message || 'Failed to add ingredient');
@@ -294,6 +222,12 @@ export default function Dashboard() {
     }
   };
 
+  const filteredIngredients = searchQuery
+    ? allIngredients.filter((ing) =>
+        ing.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allIngredients;
+
   const fullyAvailable = recipes.filter((r) => r.availability?.group === 'FULLY_AVAILABLE');
   const partiallyAvailable = recipes.filter((r) => r.availability?.group === 'PARTIALLY_AVAILABLE');
 
@@ -354,117 +288,105 @@ export default function Dashboard() {
         <Link to="/goals" className="btn btn-outline">Macro Goals</Link>
       </div>
 
-      {/* Your Pantry Section */}
+      {/* Add Ingredients Section */}
       <div className="dashboard-section">
         <div className="section-header">
-          <h2>Your Pantry</h2>
-          <span className="section-count">{pantry.length} ingredients</span>
+          <h2>Add ingredients to your pantry</h2>
+          <span className="section-count">{allIngredients.length} ingredients</span>
         </div>
 
-        <div className="ingredient-autocomplete" ref={dropdownRef}>
-          <div className="autocomplete-input-wrapper">
-            <input
-              type="text"
-              placeholder="Search ingredients to add..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onFocus={() => searchQuery && setShowDropdown(true)}
-            />
-          </div>
-
-          {showDropdown && (
-            <div className="autocomplete-dropdown">
-              {searching && <div className="autocomplete-loading">Searching...</div>}
-              {!searching && suggestions.length === 0 && (
-                <div className="autocomplete-empty">No ingredients found</div>
-              )}
-              {!searching && suggestions.map((ing) => (
-                <div key={ing.id} className="autocomplete-item">
-                  <div className="autocomplete-item-info">
-                    <span className="item-name">{ing.name}</span>
-                    <span className="item-nutrition">
-                      {ing.calories_per_100g} kcal · {ing.protein_per_100g}g protein · {ing.carbs_per_100g}g carbs · {ing.fat_per_100g}g fat
-                    </span>
-                  </div>
-                  <button
-                    className="btn btn-primary btn-sm add-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleQuickAdd(ing);
-                    }}
-                    disabled={addingId === ing.id}
-                  >
-                    {addingId === ing.id ? '...' : '+'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="ingredient-search-box">
+          <input
+            type="text"
+            placeholder="Search ingredients..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
         {success && <div className="success-message">{success}</div>}
 
-        {pantry.length > 0 && (
-          <div className="pantry-grid">
-            {pantry.map((item) => {
-              const displayValue = editValues[item.ingredient_id] ?? formatQuantity(item.quantity_grams);
-              const isUpdating = updatingId === item.ingredient_id;
-              const validationError = validationErrors[item.ingredient_id];
+        <div className="ingredient-grid">
+          {filteredIngredients.map((ing) => {
+            const pantryItem = pantry.find((p) => p.ingredient_id === ing.id);
+            const isInPantry = !!pantryItem;
+            const isAdding = addingId === ing.id;
+            const isUpdating = updatingId === ing.id;
+            const displayValue = editValues[ing.id] ?? (pantryItem ? formatQuantity(pantryItem.quantity_grams) : '');
+            const validationError = validationErrors[ing.id];
 
-              return (
-                <div key={item.ingredient_id} className="pantry-item">
-                  <div className="pantry-item-header">
-                    <h3>{item.name}</h3>
+            return (
+              <div key={ing.id} className={`ingredient-card ${isInPantry ? 'in-pantry' : ''}`}>
+                <div className="ingredient-card-image">
+                  <img
+                    src={ing.image_url}
+                    alt={ing.name}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="ingredient-image-fallback" style={{ display: 'none' }}>
+                    <span>🍽</span>
                   </div>
-                  <p className="pantry-item-nutrition">
-                    {item.calories_per_100g} kcal · {item.protein_per_100g}g protein / 100g
-                  </p>
-                  <div className="quantity-controls">
-                    <button
-                      className="qty-btn qty-decrease"
-                      onClick={() => handleDecrease(item.ingredient_id, item.quantity_grams)}
-                      disabled={isUpdating}
-                      aria-label="Decrease quantity"
-                    >
-                      −
-                    </button>
-                    <input
-                      type="text"
-                      className="qty-input"
-                      value={displayValue}
-                      onChange={(e) => handleEditChange(item.ingredient_id, e.target.value)}
-                      onKeyDown={(e) => handleEditKeyDown(e, item.ingredient_id)}
-                      onBlur={() => handleEditBlur(item.ingredient_id)}
-                      disabled={isUpdating}
-                      aria-label="Quantity in grams"
-                    />
-                    <span className="qty-unit">g</span>
-                    <button
-                      className="qty-btn qty-increase"
-                      onClick={() => handleIncrease(item.ingredient_id, item.quantity_grams)}
-                      disabled={isUpdating}
-                      aria-label="Increase quantity"
-                    >
-                      +
-                    </button>
-                  </div>
-                  {validationError && <p className="validation-error">{validationError}</p>}
-                  <button
-                    onClick={() => handleDelete(item.ingredient_id)}
-                    className="btn btn-danger btn-sm remove-btn"
-                    disabled={isUpdating}
-                  >
-                    Remove
-                  </button>
                 </div>
-              );
-            })}
-          </div>
-        )}
+                <h3 className="ingredient-card-name">{ing.name}</h3>
+                <p className="ingredient-card-calories">{ing.calories_per_100g} kcal/100g</p>
 
-        {pantry.length > 0 && (
-          <Link to="/pantry" className="view-full-link">View Full Pantry →</Link>
-        )}
+                {isInPantry ? (
+                  <>
+                    <p className="in-pantry-label">✓ In Pantry</p>
+                    <div className="quantity-controls">
+                      <button
+                        className="qty-btn qty-decrease"
+                        onClick={() => handleDecrease(ing.id, pantryItem.quantity_grams)}
+                        disabled={isUpdating}
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="text"
+                        className="qty-input"
+                        value={displayValue}
+                        onChange={(e) => handleEditChange(ing.id, e.target.value)}
+                        onKeyDown={(e) => handleEditKeyDown(e, ing.id)}
+                        onBlur={() => handleEditBlur(ing.id)}
+                        disabled={isUpdating}
+                        aria-label="Quantity in grams"
+                      />
+                      <span className="qty-unit">g</span>
+                      <button
+                        className="qty-btn qty-increase"
+                        onClick={() => handleIncrease(ing.id, pantryItem.quantity_grams)}
+                        disabled={isUpdating}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {validationError && <p className="validation-error">{validationError}</p>}
+                    <button
+                      onClick={() => handleDelete(ing.id)}
+                      className="btn btn-danger btn-sm remove-btn"
+                      disabled={isUpdating}
+                    >
+                      Remove
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="btn btn-primary add-ingredient-btn"
+                    onClick={() => handleAddIngredient(ing)}
+                    disabled={isAdding}
+                  >
+                    {isAdding ? 'Adding...' : '+ Add'}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Empty Pantry State */}
@@ -472,7 +394,6 @@ export default function Dashboard() {
         <div className="empty-state">
           <h3>Your pantry is empty</h3>
           <p>Add a few ingredients and we'll find recipes you can make.</p>
-          <Link to="/pantry" className="btn btn-primary">+ Add Your First Ingredient</Link>
         </div>
       )}
 
@@ -526,39 +447,11 @@ export default function Dashboard() {
                   <span className="suggestion-text">{item.ingredient}</span>
                   <span className="suggestion-grams">{item.totalGrams}g</span>
                 </div>
-                <span className={`priority-badge priority-${item.priority.toLowerCase()}`}>
-                  {item.priority}
+                <span className={`priority-badge priority-${(item.priority || '').toLowerCase()}`}>
+                  {item.priority || '—'}
                 </span>
               </div>
             ))}
-          </div>
-        </div>
-      )}
-
-      {/* Macro Goals */}
-      {macroTargets && (
-        <div className="dashboard-section">
-          <div className="section-header">
-            <h2>Your Daily Targets</h2>
-            <Link to="/goals" className="btn btn-outline btn-sm">Edit Goals</Link>
-          </div>
-          <div className="macro-targets">
-            <div className="macro-target">
-              <span className="macro-label">Calories</span>
-              <span className="macro-value">{macroTargets.calories} kcal</span>
-            </div>
-            <div className="macro-target">
-              <span className="macro-label">Protein</span>
-              <span className="macro-value">{macroTargets.protein}g</span>
-            </div>
-            <div className="macro-target">
-              <span className="macro-label">Carbs</span>
-              <span className="macro-value">{macroTargets.carbs}g</span>
-            </div>
-            <div className="macro-target">
-              <span className="macro-label">Fat</span>
-              <span className="macro-value">{macroTargets.fat}g</span>
-            </div>
           </div>
         </div>
       )}

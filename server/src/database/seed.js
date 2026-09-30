@@ -4,31 +4,31 @@ const pool = require('../db');
 // INGREDIENTS — nutritional values per 100g (development seed data)
 // =============================================================
 const ingredients = [
-  { name: 'Chicken Breast',        calories: 165,  protein: 31.0, carbs: 0.0,  fat: 3.6  },
-  { name: 'White Rice',            calories: 130,  protein: 2.7,  carbs: 28.0, fat: 0.3  },
-  { name: 'Brown Rice',            calories: 123,  protein: 2.7,  carbs: 25.6, fat: 1.0  },
-  { name: 'Broccoli',              calories: 34,   protein: 2.8,  carbs: 7.0,  fat: 0.4  },
-  { name: 'Eggs',                  calories: 155,  protein: 13.0, carbs: 1.1,  fat: 11.0 },
-  { name: 'Egg Whites',            calories: 52,   protein: 11.0, carbs: 0.7,  fat: 0.2  },
-  { name: 'Oats',                  calories: 389,  protein: 16.9, carbs: 66.3, fat: 6.9  },
-  { name: 'Whey Protein',          calories: 400,  protein: 80.0, carbs: 8.0,  fat: 6.0  },
-  { name: 'Greek Yogurt',          calories: 59,   protein: 10.0, carbs: 3.6,  fat: 0.4  },
-  { name: 'Milk',                  calories: 42,   protein: 3.4,  carbs: 5.0,  fat: 1.0  },
-  { name: 'Banana',                calories: 89,   protein: 1.1,  carbs: 22.8, fat: 0.3  },
-  { name: 'Apple',                 calories: 52,   protein: 0.3,  carbs: 13.8, fat: 0.2  },
-  { name: 'Potato',                calories: 77,   protein: 2.0,  carbs: 17.5, fat: 0.1  },
-  { name: 'Sweet Potato',          calories: 86,   protein: 1.6,  carbs: 20.1, fat: 0.1  },
-  { name: 'Spinach',               calories: 23,   protein: 2.9,  carbs: 3.6,  fat: 0.4  },
-  { name: 'Carrot',                calories: 41,   protein: 0.9,  carbs: 9.6,  fat: 0.2  },
-  { name: 'Tomato',                calories: 18,   protein: 0.9,  carbs: 3.9,  fat: 0.2  },
-  { name: 'Onion',                 calories: 40,   protein: 1.1,  carbs: 9.3,  fat: 0.1  },
-  { name: 'Bell Pepper',           calories: 31,   protein: 1.0,  carbs: 6.0,  fat: 0.3  },
-  { name: 'Olive Oil',             calories: 884,  protein: 0.0,  carbs: 0.0,  fat: 100.0},
-  { name: 'Peanut Butter',         calories: 588,  protein: 25.0, carbs: 20.0, fat: 50.0 },
-  { name: 'Almonds',               calories: 579,  protein: 21.2, carbs: 21.6, fat: 49.9 },
-  { name: 'Tuna',                  calories: 132,  protein: 28.0, carbs: 0.0,  fat: 1.0  },
-  { name: 'Salmon',                calories: 208,  protein: 20.0, carbs: 0.0,  fat: 13.0 },
-  { name: 'Paneer',                calories: 265,  protein: 18.3, carbs: 3.6,  fat: 20.5 },
+  { name: 'Chicken Breast',        calories: 165,  protein: 31.0, carbs: 0.0,  fat: 3.6,  image_url: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=100&h=100&fit=crop' },
+  { name: 'White Rice',            calories: 130,  protein: 2.7,  carbs: 28.0, fat: 0.3,  image_url: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=100&h=100&fit=crop' },
+  { name: 'Brown Rice',            calories: 123,  protein: 2.7,  carbs: 25.6, fat: 1.0,  image_url: 'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=100&h=100&fit=crop' },
+  { name: 'Broccoli',              calories: 34,   protein: 2.8,  carbs: 7.0,  fat: 0.4,  image_url: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=100&h=100&fit=crop' },
+  { name: 'Eggs',                  calories: 155,  protein: 13.0, carbs: 1.1,  fat: 11.0, image_url: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=100&h=100&fit=crop' },
+  { name: 'Egg Whites',            calories: 52,   protein: 11.0, carbs: 0.7,  fat: 0.2,  image_url: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=100&h=100&fit=crop' },
+  { name: 'Oats',                  calories: 389,  protein: 16.9, carbs: 66.3, fat: 6.9,  image_url: 'https://images.unsplash.com/photo-1610725664285-7c57e6eeac3f?w=100&h=100&fit=crop' },
+  { name: 'Whey Protein',          calories: 400,  protein: 80.0, carbs: 8.0,  fat: 6.0,  image_url: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=100&h=100&fit=crop' },
+  { name: 'Greek Yogurt',          calories: 59,   protein: 10.0, carbs: 3.6,  fat: 0.4,  image_url: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=100&h=100&fit=crop' },
+  { name: 'Milk',                  calories: 42,   protein: 3.4,  carbs: 5.0,  fat: 1.0,  image_url: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&h=100&fit=crop' },
+  { name: 'Banana',                calories: 89,   protein: 1.1,  carbs: 22.8, fat: 0.3,  image_url: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=100&h=100&fit=crop' },
+  { name: 'Apple',                 calories: 52,   protein: 0.3,  carbs: 13.8, fat: 0.2,  image_url: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=100&h=100&fit=crop' },
+  { name: 'Potato',                calories: 77,   protein: 2.0,  carbs: 17.5, fat: 0.1,  image_url: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=100&h=100&fit=crop' },
+  { name: 'Sweet Potato',          calories: 86,   protein: 1.6,  carbs: 20.1, fat: 0.1,  image_url: 'https://images.unsplash.com/photo-1596097635121-14b63b7a0c19?w=100&h=100&fit=crop' },
+  { name: 'Spinach',               calories: 23,   protein: 2.9,  carbs: 3.6,  fat: 0.4,  image_url: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=100&h=100&fit=crop' },
+  { name: 'Carrot',                calories: 41,   protein: 0.9,  carbs: 9.6,  fat: 0.2,  image_url: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=100&h=100&fit=crop' },
+  { name: 'Tomato',                calories: 18,   protein: 0.9,  carbs: 3.9,  fat: 0.2,  image_url: 'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=100&h=100&fit=crop' },
+  { name: 'Onion',                 calories: 40,   protein: 1.1,  carbs: 9.3,  fat: 0.1,  image_url: 'https://images.unsplash.com/photo-1518977956812-cd3dbadaaf31?w=100&h=100&fit=crop' },
+  { name: 'Bell Pepper',           calories: 31,   protein: 1.0,  carbs: 6.0,  fat: 0.3,  image_url: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=100&h=100&fit=crop' },
+  { name: 'Olive Oil',             calories: 884,  protein: 0.0,  carbs: 0.0,  fat: 100.0,image_url: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=100&h=100&fit=crop' },
+  { name: 'Peanut Butter',         calories: 588,  protein: 25.0, carbs: 20.0, fat: 50.0, image_url: 'https://images.unsplash.com/photo-1582176604856-e824b4736522?w=100&h=100&fit=crop' },
+  { name: 'Almonds',               calories: 579,  protein: 21.2, carbs: 21.6, fat: 49.9, image_url: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=100&h=100&fit=crop' },
+  { name: 'Tuna',                  calories: 132,  protein: 28.0, carbs: 0.0,  fat: 1.0,  image_url: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=100&h=100&fit=crop' },
+  { name: 'Salmon',                calories: 208,  protein: 20.0, carbs: 0.0,  fat: 13.0, image_url: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=100&h=100&fit=crop' },
+  { name: 'Paneer',                calories: 265,  protein: 18.3, carbs: 3.6,  fat: 20.5, image_url: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=100&h=100&fit=crop' },
 ];
 
 // =============================================================
@@ -148,15 +148,16 @@ async function seed() {
     const ingredientIds = {};
     for (const ing of ingredients) {
       const result = await client.query(
-        `INSERT INTO ingredients (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g)
-         VALUES ($1, $2, $3, $4, $5)
+        `INSERT INTO ingredients (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, image_url)
+         VALUES ($1, $2, $3, $4, $5, $6)
          ON CONFLICT (name) DO UPDATE SET
            calories_per_100g = EXCLUDED.calories_per_100g,
            protein_per_100g  = EXCLUDED.protein_per_100g,
            carbs_per_100g    = EXCLUDED.carbs_per_100g,
-           fat_per_100g      = EXCLUDED.fat_per_100g
+           fat_per_100g      = EXCLUDED.fat_per_100g,
+           image_url        = EXCLUDED.image_url
          RETURNING id`,
-        [ing.name, ing.calories, ing.protein, ing.carbs, ing.fat]
+        [ing.name, ing.calories, ing.protein, ing.carbs, ing.fat, ing.image_url]
       );
       ingredientIds[ing.name] = result.rows[0].id;
     }

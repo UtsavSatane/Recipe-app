@@ -3,6 +3,42 @@ const pool = require('../db');
 const SEARCH_LIMIT = 20;
 
 // -------------------------------------------------------------
+// GET /api/ingredients  (public — list all ingredients)
+// -------------------------------------------------------------
+async function getAllIngredients(req, res) {
+  try {
+    const result = await pool.query(
+      `SELECT
+         id,
+         name,
+         calories_per_100g,
+         protein_per_100g,
+         carbs_per_100g,
+         fat_per_100g,
+         image_url
+       FROM ingredients
+       ORDER BY name ASC`
+    );
+
+    const ingredients = result.rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      calories_per_100g: row.calories_per_100g,
+      protein_per_100g: row.protein_per_100g,
+      carbs_per_100g: row.carbs_per_100g,
+      fat_per_100g: row.fat_per_100g,
+      image_url: row.image_url,
+    }));
+
+    return res.json({ ingredients });
+
+  } catch (err) {
+    console.error('Get all ingredients error:', err.message);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+}
+
+// -------------------------------------------------------------
 // GET /api/ingredients/search?q=...
 // -------------------------------------------------------------
 async function searchIngredients(req, res) {
@@ -28,7 +64,8 @@ async function searchIngredients(req, res) {
          calories_per_100g,
          protein_per_100g,
          carbs_per_100g,
-         fat_per_100g
+         fat_per_100g,
+         image_url
        FROM ingredients
        WHERE name ILIKE $1
        ORDER BY name ASC
@@ -43,6 +80,7 @@ async function searchIngredients(req, res) {
       protein_per_100g: row.protein_per_100g,
       carbs_per_100g: row.carbs_per_100g,
       fat_per_100g: row.fat_per_100g,
+      image_url: row.image_url,
     }));
 
     return res.json({ ingredients });
@@ -53,4 +91,4 @@ async function searchIngredients(req, res) {
   }
 }
 
-module.exports = { searchIngredients };
+module.exports = { getAllIngredients, searchIngredients };

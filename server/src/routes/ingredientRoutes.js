@@ -1,9 +1,11 @@
 const express = require('express');
-const { searchIngredients } = require('../controllers/ingredientController');
+const { getAllIngredients, searchIngredients } = require('../controllers/ingredientController');
 
 const router = express.Router();
 
-// Public endpoint — no authentication required
+// Public endpoints — no authentication required
+// Use a specific path to avoid conflicts with /search
 router.get('/search', searchIngredients);
+router.get('/all-ingredients', getAllIngredients);
 
 module.exports = router;

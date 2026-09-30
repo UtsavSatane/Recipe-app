@@ -16,6 +16,18 @@ export default function IngredientRow({ ingredient }) {
   return (
     <div className={`ingredient-row ${statusClass}`}>
       <div className="ingredient-info">
+        <img
+          src={ingredient.image_url}
+          alt={ingredient.name || ingredient.ingredient}
+          className="ingredient-image"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'flex';
+          }}
+        />
+        <div className="ingredient-image-fallback" style={{ display: 'none' }}>
+          <span>🍽</span>
+        </div>
         <span className="ingredient-name">{ingredient.name || ingredient.ingredient}</span>
         <span className={`priority-badge priority-${(ingredient.priority || '').toLowerCase()}`}>
           {ingredient.priority}

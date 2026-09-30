@@ -376,6 +376,7 @@ async function getRecipeDetails(req, res) {
          i.protein_per_100g,
          i.carbs_per_100g,
          i.fat_per_100g,
+         i.image_url,
          ri.quantity_grams AS required_grams,
          ri.priority
        FROM recipe_ingredients ri
@@ -427,6 +428,7 @@ async function getRecipeDetails(req, res) {
         available_grams: availableGrams,
         status: status,
         missing_grams: missingGrams,
+        image_url: row.image_url,
         nutrition_per_100g: {
           calories: parseFloat(row.calories_per_100g),
           protein: parseFloat(row.protein_per_100g),
